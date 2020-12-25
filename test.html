@@ -36,7 +36,7 @@ function curl_get($url){
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, $url);
 curl_setopt($curl,CURLOPT_USERAGENT,'Android');
-curl_setopt($curl, CURLOPT_REFERER, "https://www.google.com/index.php");
+curl_setopt($curl, CURLOPT_REFERER, "https://www.google.com/search");
 curl_setopt($curl, CURLOPT_RETURNTRANSFER,1);
 curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 $cnt = curl_exec($curl);
