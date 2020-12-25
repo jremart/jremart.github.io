@@ -1,1 +1,54 @@
-Test
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  //if(document.body.outerHTML.indexOf('<script')>-1){alert('Внимание! JavaScript в body не работает. Используйте место где обозначено "// Остальной код"')}
+  var code = document.body.outerHTML.match(/<\?(?:php)?([\s\S]+)\?.*>/g)
+  var prepare = function(data){return data.replace(/^<body><!--/,'').replace(/--><\/body>$/,'')}
+  if(!code) return document.body.outerHTML = prepare(document.body.outerHTML)
+  $_GET='';location.search.replace(/([^?=&]+)(=([^&]*))?/g,function(e,t,o,r){$_GET+='$_GET[urldecode("'+encodeURIComponent(t)+'")]=urldecode("'+encodeURIComponent(r)+'");'})
+  var body = 'code='+encodeURIComponent('<?php\n'+$_GET+'\n?>'+code)
+  var xmlhttp = new XMLHttpRequest
+  xmlhttp.open("POST", "//phpfiddle.org/api/run/code/json",true)
+  xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+  xmlhttp.onreadystatechange = function () {
+    if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) {
+        var output = JSON.parse(xmlhttp.responseText);
+        if(output.result) document.body.innerHTML = prepare(document.body.outerHTML).replace(code, output.result)
+          else document.body.innerHTML = prepare(document.body.outerHTML)
+        if(output.error) {document.body[document.body.children[0]?'insertBefore':'appendChild'](document.createElement('pre'),document.body.children[0]).innerHTML = output.error}
+        document.body.innerHTML.replace(/<script[^>]*>(.*?)<\/script[^>]*>/gi,function(x,a){eval(a)})
+        // Остальной код
+      
+    }
+  };
+  xmlhttp.send(body);
+});
+document.write('<body><!--')
+  
+  
+</script>
+<body>
+<?php 
+
+
+$title="<div class=aut>Каталог мобил</div><div class=row>";
+$max="<div class=row>";
+function curl_get($url){
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl,CURLOPT_USERAGENT,'Android');
+curl_setopt($curl, CURLOPT_REFERER, "https://www.google.com/");
+curl_setopt($curl, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+$cnt = curl_exec($curl);
+curl_close($curl);
+return $cnt;
+}
+echo $_GET['suka'];
+$file = curl_get('http://sasisa.ru/'.$_GET['suka']. '', true);
+
+
+
+echo $file; 
+
+?>
+</body>
